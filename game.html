@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 
@@ -13,19 +14,34 @@
     <link rel="stylesheet" href="game.css" />
     <script src="game.js" defer></script>
 </head>
+
 <body>
 
     <div id="player">You
-        <br/>
-        <img id="playerImg" src="" alt="">
-        <div id="health">Health</div>
-        <div id="mana">Mana</div>
+        <br />
+
+        <div id="health">50/50HP</div>
+        <div id="mana">20/20MP</div>
+        <section id="buttons1">
+            <div id="buttons2">
+                <button type="button" class="buttons" id="attack">Attack</button>
+                <button type="button" class="buttons" id="magic">Fireball</button>
+                <button type="button" class="buttons" id="hPotion">Drink Red Potion</button>
+                <button type="button" class="buttons" id="mPotion">Drink Blue Potion</button>
+            </div>
+        </section>
     </div>
-    <div id="enemy">Enemy</div>
-        <div>
-        <br/>
-        <img id="enemyImg" src="" alt="">
-        <span id="eHealth">Y</span>
-        </div>
+
+    <div id="enemy">
+        Dummy
+        <div id="enemyHealth"></div>
+        <div id="enemyAttack">Attack:1</div>
+        <div id="enemyDefense">Defense:10</div>
+    </div>
+
+    <section id="log">
+
+    </section>
 </body>
+
 </html>

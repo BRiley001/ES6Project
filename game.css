@@ -52,3 +52,38 @@ Date: 8.20.19
     margin-left: auto;
     margin-right: auto;
 }
+
+#buttons1{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#buttons2{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.buttons{
+    padding: 5px;
+}
+
+#attack{
+    background-image: linear-gradient(to bottom right, rgb(240, 39, 39), rgb(240, 151, 35));
+    font-size: 16px;
+    color: white;
+}
+#magic{
+    background-image: linear-gradient(to top right, rgb(163, 8, 8),rgb(109, 69, 69));
+    font-size: 16px;
+    color: white;
+}
+#hPotion{
+    background-image: linear-gradient(to bottom right, rgb(236, 14, 6), rgb(12, 141, 173));
+    font-size: 16px;
+    color: white;
+}
+#mPotion{
+    background-image: linear-gradient(to top right, rgb(41, 112, 153), rgb(63, 190, 31));
+    font-size: 16px;
+    color: white;
+}
