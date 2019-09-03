@@ -44,6 +44,8 @@ function randomNumber(size) {
 }
 
 function damageCalc() {
+    let attack=hero.attack;
+    let defense = enemy.defense;
     if (randomNumber(10) === 10) {
         var totalDamage = attack * 3;
         console.log("CRIT");
@@ -55,7 +57,33 @@ function damageCalc() {
         totalDamage = 1
     }
     enemy.hp -= totalDamage;
-    console.log(totalDamage)
+    //console.log(totalDamage);
+    //console.log(enemy.hp);
+    if (enemy.hp<=0) {
+        enemy.hp = 0
+        document.getElementById("enemyHealth").innerText = `0/${enemy.maxhp}`;
+        log.innerText = `The enemy was slain`
+    } else {
+        let attack=enemy.attack;
+        let defense=hero.defense;
+        if (randomNumber(10) === 10) {
+            var totalDamage = attack * 3;
+            //console.log("CRIT");
+        } else {
+            var totalDamage = attack;
+        }
+        totalDamage = Math.round(totalDamage - defense * (1 / 3));
+        if (totalDamage <= 0) {
+            totalDamage = 1
+        }
+        hero.hp-=totalDamage;
+        if (hero.hp<=0) {
+            hero.hp = 0
+            document.getElementById("enemyHealth").innerText = `0/${hero.maxhp}`;
+            log.innerText = `You were slain`
+
+        }
+    }
     updateStats();
 }
 
@@ -64,10 +92,6 @@ function updateStats() {
     document.getElementById("mana").innerText = `${hero.mana}/${hero.maxmana}MP`;
     document.getElementById("enemyHealth").innerText = `${enemy.hp}/${enemy.maxhp}HP`;
     document.getElementById("enemyAttack").innerText = `Attack: ${enemy.attack}`;
-    document.getElementById("");
-    document.getElementById("");
-    document.getElementById("");
-    document.getElementById("");
 }
 
 function healthP() {
@@ -77,9 +101,9 @@ function healthP() {
         if (hero.hp > hero.maxhp) {
             hero.hp = hero.maxhp;
         }
-        log.innerText=`You drink a red potion and recover health`
-    } else{
-        log.innerText=`You don't have any red potions!`;
+        log.innerText = `You drink a red potion and recover health`;
+    } else {
+        log.innerText = `You don't have any red potions!`;
     }
 
     updateStats();
@@ -92,9 +116,9 @@ function manaP() {
         if (hero.mana > hero.maxmana) {
             hero.mana = hero.maxmana;
         }
-        log.innerText=`You drink a blue potion and regain mana`
+        log.innerText = `You drink a blue potion and regain mana`;
     } else {
-        log.innerText=`You don't have any blue potions!`;
+        log.innerText = `You don't have any blue potions!`;
     }
 
     updateStats();
@@ -104,9 +128,10 @@ function magic() {
     if (hero.mana >= 5) {
         enemy.hp -= 20;
         hero.mana -= 5;
-    } else{
-        log.innerText=`You're out of mana!`
+    } else {
+        log.innerText = `You're out of mana!`;
     }
 
     updateStats();
 }
+
