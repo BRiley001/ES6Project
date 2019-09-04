@@ -7,9 +7,9 @@
 const log = document.getElementById("log");
 
 const enemy = {
-    name: "Dummy",
-    hp: 1000,
-    maxhp: 1000,
+    name: "Slime",
+    hp: 30,
+    maxhp: 30,
     defense: 1,
     attack: 1,
 }
@@ -44,28 +44,9 @@ function randomNumber(size) {
 }
 
 function damageCalc() {
-    let attack=hero.attack;
-    let defense = enemy.defense;
-    if (randomNumber(10) === 10) {
-        var totalDamage = attack * 3;
-        console.log("CRIT");
-    } else {
-        var totalDamage = attack;
-    }
-    totalDamage = Math.round(totalDamage - defense * (1 / 3));
-    if (totalDamage <= 0) {
-        totalDamage = 1
-    }
-    enemy.hp -= totalDamage;
-    //console.log(totalDamage);
-    //console.log(enemy.hp);
-    if (enemy.hp<=0) {
-        enemy.hp = 0
-        document.getElementById("enemyHealth").innerText = `0/${enemy.maxhp}`;
-        log.innerText = `The enemy was slain`
-    } else {
-        let attack=enemy.attack;
-        let defense=hero.defense;
+    if (hero.hp > 0) {
+        let attack = hero.attack;
+        let defense = enemy.defense;
         if (randomNumber(10) === 10) {
             var totalDamage = attack * 3;
             //console.log("CRIT");
@@ -76,22 +57,62 @@ function damageCalc() {
         if (totalDamage <= 0) {
             totalDamage = 1
         }
-        hero.hp-=totalDamage;
-        if (hero.hp<=0) {
-            hero.hp = 0
-            document.getElementById("enemyHealth").innerText = `0/${hero.maxhp}`;
-            log.innerText = `You were slain`
-
+        enemy.hp -= totalDamage;
+        log.innerText=`You hit the enemy for ${totalDamage}`;
+        //console.log(totalDamage);
+        //console.log(enemy.hp);
+        if (enemy.hp <= 0) {
+            enemy.hp = 0
+            document.getElementById("enemyHealth").innerText = `0/${enemy.maxhp}`;
+            log.innerText = `The enemy was slain`
+            setTimeout(function () {
+                log.innerText = `Choose a stat to upgrade`;
+                document.getElementById(`statChoice`).style.display = `initial`;
+                statChoice();
+            }, 3000)
+        } else {
+            enemyAttack();
         }
+        updateStats();
+    } else {
+        log.innerText(`You can't attack`)
     }
-    updateStats();
+
+}
+
+function enemyAttack() {
+    let attack = enemy.attack;
+    let defense = hero.defense;
+    if (randomNumber(10) === 10) {
+        var totalDamage = attack * 3;
+        //console.log("CRIT");
+    } else {
+        var totalDamage = attack;
+    }
+    totalDamage = Math.round(totalDamage - defense * (1 / 3));
+    if (totalDamage <= 0) {
+        totalDamage = 1
+    }
+    hero.hp -= totalDamage;
+    log.innerText += `, but the enemy hits you for ${totalDamage}`;
+    if (hero.hp <= 0) {
+        hero.hp = 0
+        document.getElementById("enemyHealth").innerText = `0/${hero.maxhp}`;
+        log.innerText = `You were slain`;
+    }
 }
 
 function updateStats() {
     document.getElementById("health").innerText = `${hero.hp}/${hero.maxhp}HP`;
     document.getElementById("mana").innerText = `${hero.mana}/${hero.maxmana}MP`;
+    document.getElementById("statA").innerText = `Attack: ${hero.attack}`;
+    document.getElementById("statD").innerText = `Defense: ${hero.defense}`;
+    document.getElementById("hPotion").innerText = `Drink Red Potion (${hero.rpotions})`;
+    document.getElementById("mPotion").innerText = `Drink Blue Potion (${hero.mpotions})`;
     document.getElementById("enemyHealth").innerText = `${enemy.hp}/${enemy.maxhp}HP`;
     document.getElementById("enemyAttack").innerText = `Attack: ${enemy.attack}`;
+    document.getElementById("enemyDefense").innerText = `Defense: ${enemy.defense}`;
+
 }
 
 function healthP() {
@@ -125,13 +146,64 @@ function manaP() {
 }
 
 function magic() {
-    if (hero.mana >= 5) {
-        enemy.hp -= 20;
-        hero.mana -= 5;
-    } else {
-        log.innerText = `You're out of mana!`;
-    }
+    if (enemy.hp > 0) {
+        if (hero.mana >= 5) {
+            enemy.hp -= 20;
+            log.innerText = `You hit the enemy with a fireball`;
+            if (enemy.hp <= 0) {
+                enemy.hp = 0;
+                log.innerText = `The enemy was slain`;
+                setTimeout(function () {
+                    log.innerText = `Choose a stat to upgrade`;
+                    document.getElementById(`statChoice`).style.display = `initial`;
+                    statChoice();
+                }, 3000)
+            }
+            hero.mana -= 5;
+        } else {
+            log.innerText = `You're out of mana!`;
+        }
 
-    updateStats();
+        updateStats();
+    } else {
+        log.innerText = (`The enemy is already slain`);
+    }
 }
 
+function statChoice() {
+    document.querySelector("#stat1").onclick = function () {
+        hero.attack += 1;
+        document.getElementById(`statChoice`).style.display = `none`;
+        updateStats();
+        makeEnemy();
+    };
+    document.querySelector("#stat2").onclick = function () {
+        hero.defense += 1;
+        document.getElementById(`statChoice`).style.display = `none`;
+        updateStats();
+        makeEnemy();
+    };
+    document.querySelector("#stat3").onclick = function () {
+        hero.maxmana += 5;
+        hero.mana += 5;
+        document.getElementById(`statChoice`).style.display = `none`;
+        updateStats();
+        makeEnemy();
+    };
+    document.querySelector("#stat4").onclick = function () {
+        hero.maxhp += 10;
+        hero.hp += 10;
+        document.getElementById(`statChoice`).style.display = `none`;
+        updateStats();
+        makeEnemy();
+    };
+}
+
+function makeEnemy() {
+    log.innerText = `A new enemy approaches`
+    enemy.hp = 30;
+    enemy.maxhp = 30;
+    enemy.attack = randomNumber(3);
+    enemy.defense = randomNumber(3);
+    updateStats();
+}

@@ -53,17 +53,17 @@ Date: 8.20.19
     margin-right: auto;
 }
 
-#buttons1{
+#buttons1 {
     margin-left: auto;
     margin-right: auto;
 }
 
-#buttons2{
+#buttons2 {
     margin-left: auto;
     margin-right: auto;
 }
 
-.buttons{
+.buttons {
     padding: 5px;
     width: 75%;
     font-size: 16px;
@@ -73,16 +73,44 @@ Date: 8.20.19
     margin-bottom: 10px;
 }
 
-#attack{
+#attack {
     background-image: linear-gradient(to bottom right, rgb(240, 39, 39), rgb(240, 151, 35));
     margin-top: 10px;
 }
-#magic{
-    background-image: linear-gradient(to top right, rgb(163, 8, 8),rgb(109, 69, 69));
+
+#magic {
+    background-image: linear-gradient(to top right, rgb(163, 8, 8), rgb(109, 69, 69));
 }
-#hPotion{
+
+#hPotion {
     background-image: linear-gradient(to bottom right, rgb(236, 14, 6), rgb(12, 141, 173));
 }
-#mPotion{
+
+#mPotion {
     background-image: linear-gradient(to top right, rgb(41, 112, 153), rgb(63, 190, 31));
+}
+
+#log {
+    width: 45%;
+    height: 300px;
+    float: right;
+    border: 4px dashed black;
+    margin-right: 3%;
+    font-size: 1.7em;
+    text-align: center;
+}
+
+#statChoice {
+    width: 50%;
+    float: right;
+    display: none;
+}
+
+#stat1,
+#stat2,
+#stat3,
+#stat4 {
+    width: 25%;
+    float: left;
+    height: 30px;
 }
