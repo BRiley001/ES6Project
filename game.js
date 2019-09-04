@@ -45,7 +45,8 @@ function randomNumber(size) {
 
 function damageCalc() {
     if (hero.hp > 0) {
-        let attack = hero.attack;
+        if (enemy.hp>0) {
+            let attack = hero.attack;
         let defense = enemy.defense;
         if (randomNumber(10) === 10) {
             var totalDamage = attack * 3;
@@ -74,6 +75,10 @@ function damageCalc() {
             enemyAttack();
         }
         updateStats();
+        } else{
+            log.innerText = `The enemy is already slain`;
+        }
+        
     } else {
         log.innerText(`You can't attack`)
     }
