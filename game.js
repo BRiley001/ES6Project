@@ -26,7 +26,8 @@ const hero = {
     mana: 20,
     maxmana: 20,
     hpotions: 3,
-    mpotions: 3
+    mpotions: 3,
+    gold: 2
 }
 
 //sets up the page correctly
@@ -123,6 +124,7 @@ function updateStats() {
     document.getElementById("enemyHealth").innerText = `${enemy.hp}/${enemy.maxhp}HP`;
     document.getElementById("enemyAttack").innerText = `Attack: ${enemy.attack}`;
     document.getElementById("enemyDefense").innerText = `Defense: ${enemy.defense}`;
+    document.getElementById("gold").innerText = `Gold: ${hero.gold}`
 }
 
 //A function to drink a health potion, assuming they can
@@ -232,25 +234,31 @@ function statChoice() {
 
 //Creates a new enemy when the previous one dies, the new one has somewhat random stats(that ramp up)
 function makeEnemy() {
-
-    log.innerText = `A new enemy approaches`;
-    enemyRampUp += .3;
-    enemy.hp = 30 + (randomNumber(3) * (10 * enemyRampUp));
-    enemy.maxhp = enemy.hp;
-    if (enemy.maxhp < 50) {
-        enemy.name = "Slime";
-    } else if (100 > enemy.maxhp && enemy.maxhp >= 50) {
-        enemy.name = "Bandit";
-    } else if (175 > enemy.maxhp && enemy.maxhp >= 100) {
-        enemy.name = "Barbarian";
-    } else if (250 > enemy.maxhp && enemy.maxhp >= 175) {
-        enemy.name = "Giant";
-    } else if (300 > enemy.maxhp && enemy.maxhp >= 250) {
-        enemy.name = "Dragon";
-    } else if (enemy.maxhp >= 300) {
-        enemy.name = "God";
-    }
-    enemy.attack = Math.round(randomNumber(3) * enemyRampUp);
-    enemy.defense = Math.round(randomNumber(3) * enemyRampUp);
+    let gold = Math.round((randomNumber(10) + 1) * enemyRampUp);
+    log.innerText = `You loot ${gold} gold pieces from the enemy`;
+    hero.gold+=gold;
+    setTimeout(function () {
+        log.innerText = `A new enemy approaches`;
+        enemyRampUp += .5;
+        enemy.hp = 30 + (randomNumber(3) * (10 * enemyRampUp));
+        enemy.maxhp = enemy.hp;
+        if (enemy.maxhp < 50) {
+            enemy.name = "Slime";
+        } else if (100 > enemy.maxhp && enemy.maxhp >= 50) {
+            enemy.name = "Bandit";
+        } else if (175 > enemy.maxhp && enemy.maxhp >= 100) {
+            enemy.name = "Barbarian";
+        } else if (250 > enemy.maxhp && enemy.maxhp >= 175) {
+            enemy.name = "Giant";
+        } else if (300 > enemy.maxhp && enemy.maxhp >= 250) {
+            enemy.name = "Dragon";
+        } else if (enemy.maxhp >= 300) {
+            enemy.name = "God";
+        }
+        enemy.attack = Math.round(randomNumber(3) * enemyRampUp);
+        enemy.defense = Math.round(randomNumber(3) * enemyRampUp);
+        console.log("yo");
+        updateStats();
+    }, 2000)
     updateStats();
 }

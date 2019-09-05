@@ -114,3 +114,15 @@ Date: 8.20.19
     float: left;
     height: 30px;
 }
+
+#shop{
+    clear: both;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#shop button{
+    width: 40%;
+    height: 45px;
+}
