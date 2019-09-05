@@ -5,6 +5,7 @@
 //Global Variables
 //Shortcut for changing the battlelog
 const log = document.getElementById("log");
+var enemyRampUp = 0;
 
 //The enemy's stats
 const enemy = {
@@ -74,7 +75,7 @@ function damageCalc() {
                     log.innerText = `Choose a stat to upgrade`;
                     document.getElementById(`statChoice`).style.display = `initial`;
                     statChoice();
-                }, 3000)
+                }, 2000)
             } else {
                 enemyAttack();
             }
@@ -118,6 +119,7 @@ function updateStats() {
     document.getElementById("statD").innerText = `Defense: ${hero.defense}`;
     document.getElementById("hPotion").innerText = `Drink Health Potion (${hero.hpotions})`;
     document.getElementById("mPotion").innerText = `Drink Mana Potion (${hero.mpotions})`;
+    document.getElementById("enemyName").innerText = `${enemy.name}`;
     document.getElementById("enemyHealth").innerText = `${enemy.hp}/${enemy.maxhp}HP`;
     document.getElementById("enemyAttack").innerText = `Attack: ${enemy.attack}`;
     document.getElementById("enemyDefense").innerText = `Defense: ${enemy.defense}`;
@@ -125,62 +127,77 @@ function updateStats() {
 
 //A function to drink a health potion, assuming they can
 function healthP() {
-    if (hero.hp == hero.maxhp) {
-        log.innerText = `You're already at full health!`;
-    } else if (hero.hpotions > 0) {
-        hero.hpotions -= 1;
-        hero.hp += 30;
-        if (hero.hp > hero.maxhp) {
-            hero.hp = hero.maxhp;
+    if (hero.hp > 0) {
+        if (hero.hp == hero.maxhp) {
+            log.innerText = `You're already at full health!`;
+        } else if (hero.hpotions > 0) {
+            hero.hpotions -= 1;
+            hero.hp += 30;
+            if (hero.hp > hero.maxhp) {
+                hero.hp = hero.maxhp;
+            }
+            log.innerText = `You drink a red potion and recover health`;
+        } else {
+            log.innerText = `You don't have any red potions!`;
         }
-        log.innerText = `You drink a red potion and recover health`;
     } else {
-        log.innerText = `You don't have any red potions!`;
+        log.innerText = `You have already been slain`;
     }
+
 
     updateStats();
 }
 
 //Checks to see if the player can drink a mana potion
 function manaP() {
-    if (hero.mana == hero.maxmana) {
-        log.innerText = `You already have full mana!`;
-    } else if (hero.mpotions > 0) {
-        hero.mpotions -= 1;
-        hero.mana += 10;
-        if (hero.mana > hero.maxmana) {
-            hero.mana = hero.maxmana;
+    if (hero.hp > 0) {
+        if (hero.mana == hero.maxmana) {
+            log.innerText = `You already have full mana!`;
+        } else if (hero.mpotions > 0) {
+            hero.mpotions -= 1;
+            hero.mana += 10;
+            if (hero.mana > hero.maxmana) {
+                hero.mana = hero.maxmana;
+            }
+            log.innerText = `You drink a blue potion and regain mana`;
+        } else {
+            log.innerText = `You don't have any blue potions!`;
         }
-        log.innerText = `You drink a blue potion and regain mana`;
     } else {
-        log.innerText = `You don't have any blue potions!`;
+        log.innerText = `You have already been slain`;
     }
+
     updateStats();
 }
 
 //An alternative to an attack that doesn't let the enemy attack, but costs mana
 function magic() {
-    if (enemy.hp > 0) {
-        if (hero.mana >= 5) {
-            enemy.hp -= 20;
-            log.innerText = `You hit the enemy with a fireball`;
-            if (enemy.hp <= 0) {
-                enemy.hp = 0;
-                log.innerText = `The enemy was slain`;
-                setTimeout(function () {
-                    log.innerText = `Choose a stat to upgrade`;
-                    document.getElementById(`statChoice`).style.display = `initial`;
-                    statChoice();
-                }, 3000)
+    if (hero.hp > 0) {
+        if (enemy.hp > 0) {
+            if (hero.mana >= 5) {
+                enemy.hp -= 20;
+                log.innerText = `You hit the enemy with a fireball`;
+                if (enemy.hp <= 0) {
+                    enemy.hp = 0;
+                    log.innerText = `The enemy was slain`;
+                    setTimeout(function () {
+                        log.innerText = `Choose a stat to upgrade`;
+                        document.getElementById(`statChoice`).style.display = `initial`;
+                        statChoice();
+                    }, 2000)
+                }
+                hero.mana -= 5;
+            } else {
+                log.innerText = `You're out of mana!`;
             }
-            hero.mana -= 5;
+
         } else {
-            log.innerText = `You're out of mana!`;
+            log.innerText = `The enemy is already slain`;
         }
-        updateStats();
     } else {
-        log.innerText = (`The enemy is already slain`);
+        log.innerText = `You have already been slain`;
     }
+    updateStats();
 }
 
 //When the player defeats an enemy, they get to increase their stats
@@ -213,12 +230,27 @@ function statChoice() {
     };
 }
 
-//Creates a new enemy when the previous one dies, the new one has somewhat random stats
+//Creates a new enemy when the previous one dies, the new one has somewhat random stats(that ramp up)
 function makeEnemy() {
-    log.innerText = `A new enemy approaches`
-    enemy.hp = 30;
-    enemy.maxhp = 30;
-    enemy.attack = randomNumber(3);
-    enemy.defense = randomNumber(3);
+
+    log.innerText = `A new enemy approaches`;
+    enemyRampUp += .3;
+    enemy.hp = 30 + (randomNumber(3) * (10 * enemyRampUp));
+    enemy.maxhp = enemy.hp;
+    if (enemy.maxhp < 50) {
+        enemy.name = "Slime";
+    } else if (100 > enemy.maxhp && enemy.maxhp >= 50) {
+        enemy.name = "Bandit";
+    } else if (175 > enemy.maxhp && enemy.maxhp >= 100) {
+        enemy.name = "Barbarian";
+    } else if (250 > enemy.maxhp && enemy.maxhp >= 175) {
+        enemy.name = "Giant";
+    } else if (300 > enemy.maxhp && enemy.maxhp >= 250) {
+        enemy.name = "Dragon";
+    } else if (enemy.maxhp >= 300) {
+        enemy.name = "God";
+    }
+    enemy.attack = Math.round(randomNumber(3) * enemyRampUp);
+    enemy.defense = Math.round(randomNumber(3) * enemyRampUp);
     updateStats();
 }
