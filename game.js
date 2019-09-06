@@ -40,6 +40,10 @@ function setup() {
     document.querySelector("#magic").onclick = magic;
     document.querySelector("#hPotion").onclick = healthP;
     document.querySelector("#mPotion").onclick = manaP;
+    document.querySelector("#shop1").onclick = buyH;
+    document.querySelector("#shop2").onclick = buyM;
+    document.querySelector("#shop3").onclick = buyW;
+    document.querySelector("#shop4").onclick = buyA;
     updateStats();
 }
 
@@ -85,7 +89,7 @@ function damageCalc() {
             log.innerText = `The enemy is already slain`;
         }
     } else {
-        log.innerText(`You can't attack`)
+        log.innerText = (`You can't attack`);
     }
 }
 
@@ -93,7 +97,7 @@ function damageCalc() {
 function enemyAttack() {
     let attack = enemy.attack;
     let defense = hero.defense;
-    if (randomNumber(10) === 10) {
+    if (randomNumber(20) === 20) {
         var totalDamage = attack * 3;
         //console.log("CRIT");
     } else {
@@ -234,13 +238,13 @@ function statChoice() {
 
 //Creates a new enemy when the previous one dies, the new one has somewhat random stats(that ramp up)
 function makeEnemy() {
-    let gold = Math.round((randomNumber(10) + 1) * enemyRampUp);
+    let gold = Math.round((randomNumber(20) + randomNumber(20)) * enemyRampUp);
     log.innerText = `You loot ${gold} gold pieces from the enemy`;
-    hero.gold+=gold;
+    hero.gold += gold;
     setTimeout(function () {
         log.innerText = `A new enemy approaches`;
-        enemyRampUp += .5;
-        enemy.hp = 30 + (randomNumber(3) * (10 * enemyRampUp));
+        enemyRampUp += .25;
+        enemy.hp = 30 + Math.round((randomNumber(3) * (10 * enemyRampUp)));
         enemy.maxhp = enemy.hp;
         if (enemy.maxhp < 50) {
             enemy.name = "Slime";
@@ -255,10 +259,55 @@ function makeEnemy() {
         } else if (enemy.maxhp >= 300) {
             enemy.name = "God";
         }
-        enemy.attack = Math.round(randomNumber(3) * enemyRampUp);
-        enemy.defense = Math.round(randomNumber(3) * enemyRampUp);
-        console.log("yo");
+        enemy.attack = Math.round((randomNumber(3)+1) * enemyRampUp);
+        enemy.defense = Math.round((randomNumber(3)+1) * enemyRampUp);
         updateStats();
     }, 2000)
+    updateStats();
+}
+
+function buyH() {
+    if (hero.gold>=50) {
+        hero.gold-=50;
+        hero.hpotions+=1;
+        log.innerText = `You buy a health potion`;
+    } else {
+        log.innerText = `You don't have enough gold to buy this`;
+    }
+    updateStats();
+}
+
+function buyM() {
+    if (hero.gold>=30) {
+        hero.gold-=30;
+        hero.mpotions+=1;
+        log.innerText = `You buy a mana potion`;
+    } else {
+        log.innerText = `You don't have enough gold to buy this`;
+    }
+    updateStats();
+}
+
+function buyW() {
+    if (hero.gold>=100) {
+        hero.gold-=100;
+        hero.attack+=1;
+        log.innerText = `You better a new weapon (+1 attack)`;
+    } else {
+        log.innerText = `You don't have enough gold to buy this`;
+    }
+    updateStats();
+}
+
+function buyA() {
+    if (hero.gold>=75) {
+        hero.gold-=75;
+        hero.defense+=1;
+        hero.maxhp+=5;
+        hero.hp+=5;
+        log.innerText = `You buy better armor (+1 defense, +5 health)`;
+    } else {
+        log.innerText = `You don't have enough gold to buy this`;
+    }
     updateStats();
 }
