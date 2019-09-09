@@ -302,7 +302,7 @@ function buyW() {
         if (hero.gold >= 100) {
             hero.gold -= 100;
             hero.attack += 1;
-            log.innerText = `You better a new weapon (+1 attack)`;
+            log.innerText = `You buy a new weapon (+1 attack)`;
         } else {
             log.innerText = `You don't have enough gold to buy this`;
         }
