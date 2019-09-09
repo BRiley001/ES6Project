@@ -259,55 +259,72 @@ function makeEnemy() {
         } else if (enemy.maxhp >= 300) {
             enemy.name = "God";
         }
-        enemy.attack = Math.round((randomNumber(3)+1) * enemyRampUp);
-        enemy.defense = Math.round((randomNumber(3)+1) * enemyRampUp);
+        enemy.attack = Math.round((randomNumber(3) + 1) * enemyRampUp);
+        enemy.defense = Math.round((randomNumber(3) + 1) * enemyRampUp);
         updateStats();
     }, 2000)
     updateStats();
 }
 
 function buyH() {
-    if (hero.gold>=50) {
-        hero.gold-=50;
-        hero.hpotions+=1;
-        log.innerText = `You buy a health potion`;
-    } else {
-        log.innerText = `You don't have enough gold to buy this`;
+    if (hero.hp > 0) {
+        if (hero.gold >= 50) {
+            hero.gold -= 50;
+            hero.hpotions += 1;
+            log.innerText = `You buy a health potion`;
+        } else {
+            log.innerText = `You don't have enough gold to buy this`;
+        }
+        
+    } else{
+        log.innerText=`You have already been slain`;
     }
     updateStats();
 }
 
 function buyM() {
-    if (hero.gold>=30) {
-        hero.gold-=30;
-        hero.mpotions+=1;
-        log.innerText = `You buy a mana potion`;
-    } else {
-        log.innerText = `You don't have enough gold to buy this`;
+    if (hero.hp > 0) {
+        if (hero.gold >= 30) {
+            hero.gold -= 30;
+            hero.mpotions += 1;
+            log.innerText = `You buy a mana potion`;
+        } else {
+            log.innerText = `You don't have enough gold to buy this`;
+        }
+    } else{
+        log.innerText=`You have already been slain`;
     }
     updateStats();
 }
 
 function buyW() {
-    if (hero.gold>=100) {
-        hero.gold-=100;
-        hero.attack+=1;
-        log.innerText = `You better a new weapon (+1 attack)`;
-    } else {
-        log.innerText = `You don't have enough gold to buy this`;
+    if (hero.hp > 0) {
+        if (hero.gold >= 100) {
+            hero.gold -= 100;
+            hero.attack += 1;
+            log.innerText = `You better a new weapon (+1 attack)`;
+        } else {
+            log.innerText = `You don't have enough gold to buy this`;
+        }
+    } else{
+        log.innerText=`You have already been slain`;
     }
     updateStats();
 }
 
 function buyA() {
-    if (hero.gold>=75) {
-        hero.gold-=75;
-        hero.defense+=1;
-        hero.maxhp+=5;
-        hero.hp+=5;
-        log.innerText = `You buy better armor (+1 defense, +5 health)`;
-    } else {
-        log.innerText = `You don't have enough gold to buy this`;
+    if (hero.hp > 0) {
+        if (hero.gold >= 75) {
+            hero.gold -= 75;
+            hero.defense += 1;
+            hero.maxhp += 5;
+            hero.hp += 5;
+            log.innerText = `You buy better armor (+1 defense, +5 health)`;
+        } else {
+            log.innerText = `You don't have enough gold to buy this`;
+        }
+    } else{
+        log.innerText=`You have already been slain`;
     }
     updateStats();
 }
